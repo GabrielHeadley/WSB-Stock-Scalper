@@ -72,12 +72,12 @@ class SubredditScraper:
 
     def calculate_ranking(self, post_data):
         sentiment_counts = 0
-        print(f"Filtered Posts {len(post_data)}")
+        #print(f"Filtered Posts {len(post_data)}")
         for post_text in post_data['selftext']:
             matches = re.findall(r'great|awesome|buy|hold|strong|bullish|safe|up', post_text, re.IGNORECASE)
             sentiment_counts += len(matches)
-            print(f"Matches found {len(matches)}")
-            
+            #print(f"Matches found {len(matches)}")
+        return sentiment_counts            
              
 
         # TODO: Loop through post_data and generate a ranking
@@ -120,7 +120,7 @@ class SubredditScraper:
             sleep(0.1)
             self.get_image(post.url)
 
-
+        #reusults will return the sentiment count
         results = self.calculate_ranking(post_data=sub_dict)
         
         #Putting into pandas to export post data to csv
@@ -136,7 +136,7 @@ class SubredditScraper:
         elif self.mode == 'w+':
             new_df.to_csv(csv, index=False)
 
-            ui.updates(f'{matched_posts/searched_posts*100} percent of posts contain the keyword and {matches} matches were found.')
+            ui.updates(f'{matched_posts/searched_posts*100} percent of posts contain the keyword and there were {results} positive mentions.')
             
         else:
             print(f'{len(new_df)} posts were collected but they were not added to {csv} because mode was set to "{self.mode}')
